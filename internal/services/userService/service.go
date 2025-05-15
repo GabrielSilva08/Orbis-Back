@@ -1,0 +1,17 @@
+package userService
+
+import "github.com/GabrielSilva08/Orbis/internal/models/userModel"
+import "github.com/GabrielSilva08/Orbis/internal/repositories/userRepo"
+
+type UserService struct {
+	repo userRepo.UserRepositoryInterface
+}
+
+func NewUserService(repo userRepo.UserRepositoryInterface) UserServiceInterface {
+	return &UserService{repo: repo}
+}
+
+func (service UserService) Create(user userModel.User) error { //implementando a função definida na interface
+	service.repo.Create(user)
+	return nil
+}
