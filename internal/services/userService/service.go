@@ -11,7 +11,6 @@ func NewUserService(repo userRepo.UserRepositoryInterface) UserServiceInterface 
 	return &UserService{repo: repo}
 }
 
-func (service UserService) Create(user userModel.User) error { //implementando a função definida na interface
-	service.repo.Create(user)
-	return nil
+func (service UserService) Create(user userModel.User) (userModel.User, error) { //implementando a função definida na interface
+	return service.repo.Create(user)
 }

@@ -11,13 +11,15 @@ type userController struct {
 }
 
 func (uc userController) Create(ctx *fiber.Ctx) error {
-	var user userModel.User
+	var userReq userModel.User
 
-	if err := ctx.BodyParser(&user); err != nil {
+	if err := ctx.BodyParser(&userReq); err != nil {
 		return ctx.Status(fiber.StatusUnprocessableEntity).JSON(fiber.Map{"Message": err.Error()}) //se não conseguir transformar o JSON em user, erro unprocessable entidy
 	}
 
-	if err := uc.service.Create(user); err != nil {
+	user, err := uc.service.Create(userReq)
+
+	if err != nil {
 		return ctx.Status(fiber.StatusBadRequest).JSON(fiber.Map{"Message": err.Error()}) //tratando de um possível erro no backend, erro bad request
 	}
 
