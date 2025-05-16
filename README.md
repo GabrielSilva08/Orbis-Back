@@ -14,13 +14,17 @@ Aplicação mobile criada para ser apresentada durante a disciplina de Engenhari
    Copie o arquivo `.env.sample` para `.env`:
    ```bash
    cp .env.sample .env
+   ```
 
-2.**Subir o banco de dados com Docker Compose**
+2. **Subir o banco de dados com Docker Compose**  
    No terminal, execute:
    ```bash
    docker compose up db
+   ```
 
-3.**Executar a aplicação**
+3. **Executar a aplicação**  
+   Navegue até a pasta `cmd` e rode o arquivo principal:
    ```bash
    cd cmd
    go run main.go
+   ```
