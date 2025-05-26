@@ -5,7 +5,6 @@ go 1.23
 toolchain go1.23.9
 
 require (
-	github.com/DATA-DOG/go-sqlmock v1.5.2
 	github.com/gofiber/fiber/v2 v2.52.6
 	github.com/stretchr/testify v1.8.1
 	gorm.io/gorm v1.25.10
