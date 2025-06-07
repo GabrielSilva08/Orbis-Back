@@ -3,6 +3,7 @@ package tasksService
 import (
 	"github.com/GabrielSilva08/Orbis/internal/models/tasksModel"
 	"github.com/GabrielSilva08/Orbis/internal/repositories/tasksRepo"
+	"github.com/google/uuid"
 )
 
 type TaskService struct {
@@ -15,4 +16,16 @@ func NewTaskService(repo tasksRepo.TaskRepositoryInterface) TaskServiceInterface
 
 func (service TaskService) Create(task tasksModel.Task) (tasksModel.Task, error) {
 	return service.repo.Create(task)
+}
+
+func (service TaskService) ListAllTasks() ([]tasksModel.Task, error) {
+	return service.repo.ListAllTasks()
+}
+
+func (service TaskService) GetTaskByID(id uuid.UUID) (tasksModel.Task, error) {
+	return service.repo.GetTaskByID(id)
+}
+
+func (service TaskService) DeleteTaskByID(id uuid.UUID) error {
+	return service.repo.DeleteTaskByID(id)
 }

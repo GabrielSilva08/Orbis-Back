@@ -27,8 +27,8 @@ func main() {
 
 	db.Connect() //se conectando com o banco de dados
 	db.Database.AutoMigrate(userModel.User{})
+	db.Database.AutoMigrate(tasksModel.Tag{})
 	db.Database.AutoMigrate(tasksModel.Task{})
-	db.Database.AutoMigrate(tasksModel.TaskList{})
 
 	userrepo := userRepo.NewUserRepository()
 	userservice := userService.NewUserService(userrepo)
@@ -38,9 +38,9 @@ func main() {
 	taskService := tasksService.NewTaskService(taskRepo)
 	tasksController.NewTaskController(taskService, v1)
 
-	taskListrepo := tasksRepo.NewTaskListRepository()
-	taskListservice := tasksService.NewTaskListService(taskListrepo)
-	tasksController.NewTaskListController(taskListservice, v1)
+	tagrepo := tasksRepo.NewTagRepository()
+	tagservice := tasksService.NewTagService(tagrepo)
+	tasksController.NewTagController(tagservice, v1)
 
 	app.Listen(":3000")
 }
