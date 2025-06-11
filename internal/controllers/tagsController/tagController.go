@@ -1,29 +1,45 @@
-package tasksController
+package tagsController
 
 import (
-	"github.com/GabrielSilva08/Orbis/internal/models"
+	tagdtos "github.com/GabrielSilva08/Orbis/internal/dtos/tagDtos"
 	"github.com/GabrielSilva08/Orbis/internal/services/tagsService"
 	"github.com/gofiber/fiber/v2"
+	"github.com/go-playground/validator/v10"
+	"regexp"
 )
 
 type tagController struct {
 	service tagsService.TagServiceInterface
 }
 
+var validate = validator.New()
+
+func init() { //usando a biblioteca validade para cadastrar uma validação usando regex na cor
+	_ = validate.RegisterValidation("hexcolor", func(fl validator.FieldLevel) bool {
+		color := fl.Field().String()
+		match, _ := regexp.MatchString(`^#(?:[0-9a-fA-F]{3}){1,2}$`, color)
+		return match
+	})
+}
+
 func (tc tagController) Create(ctx *fiber.Ctx) error {
-	var tagReq models.Tag
+	var tagReq tagdtos.CreateTagDto
 
 	if err := ctx.BodyParser(&tagReq); err != nil {
 		return ctx.Status(fiber.StatusUnprocessableEntity).JSON(fiber.Map{"Message:": err.Error()})
 	}
 
-	task, err := tc.service.Create(tagReq)
+	if err := validate.Struct(tagReq); err != nil {
+		return ctx.Status(fiber.StatusBadRequest).JSON(fiber.Map{"validation_error": err.Error()})
+	}
+
+	tag, err := tc.service.Create(tagReq)
 
 	if err != nil {
 		return ctx.Status(fiber.StatusBadRequest).JSON(fiber.Map{"Message": err.Error()})
 	}
 
-	return ctx.Status(fiber.StatusCreated).JSON(task)
+	return ctx.Status(fiber.StatusCreated).JSON(tag)
 }
 
 func (tc tagController) defineRoutes(router fiber.Router) {

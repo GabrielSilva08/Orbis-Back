@@ -3,17 +3,17 @@ package main
 import (
 	"log"
 
+	"github.com/GabrielSilva08/Orbis/internal/controllers/tagsController"
 	"github.com/GabrielSilva08/Orbis/internal/controllers/tasksController"
 	"github.com/GabrielSilva08/Orbis/internal/controllers/userController"
-	"github.com/GabrielSilva08/Orbis/internal/controllers/tagsController"
 	"github.com/GabrielSilva08/Orbis/internal/models"
 	db "github.com/GabrielSilva08/Orbis/internal/repositories"
+	"github.com/GabrielSilva08/Orbis/internal/repositories/tagsRepo"
 	"github.com/GabrielSilva08/Orbis/internal/repositories/tasksRepo"
 	"github.com/GabrielSilva08/Orbis/internal/repositories/userRepo"
-	"github.com/GabrielSilva08/Orbis/internal/repositories/tagsRepo"
+	"github.com/GabrielSilva08/Orbis/internal/services/tagsService"
 	"github.com/GabrielSilva08/Orbis/internal/services/tasksService"
 	"github.com/GabrielSilva08/Orbis/internal/services/userService"
-	"github.com/GabrielSilva08/Orbis/internal/services/tagsService"
 	"github.com/gofiber/fiber/v2"
 	"github.com/joho/godotenv"
 )
@@ -42,7 +42,7 @@ func main() {
 
 	tagrepo := tagsRepo.NewTagRepository()
 	tagservice := tagsService.NewTagService(tagrepo)
-	tasksController.NewTagController(tagservice, v1)
+	tagsController.NewTagController(tagservice, v1)
 
 	app.Listen(":3000")
 }

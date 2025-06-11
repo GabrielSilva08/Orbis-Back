@@ -1,4 +1,4 @@
-package tasksController
+package tagsController
 
 import "github.com/gofiber/fiber/v2"
 

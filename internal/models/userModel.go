@@ -9,7 +9,7 @@ import (
 type User struct {
 	UserID   uuid.UUID `gorm:"type:uuid;primaryKey" json:"id"`
 	Name string    `json:"name"`
-	Tags []Tag `gorm:"foreignKey:UserID"` //relação 1 to many com User
+	Tag  []Tag     `json:"tag"` //relação 1 to many de tag com user
 }
 
 func (u *User) BeforeCreate(tx *gorm.DB) (err error) { //método para gerar automaticamente o uuid antes de inserir no banco de dados

@@ -17,7 +17,7 @@ func (tr taskRepository) Create(task models.Task) (models.Task, error) {
 	}
 
 	// Recarregar com relacionamentos
-	if err := db.Database.Preload("Tag").First(&task, task.ID).Error; err != nil {
+	if err := db.Database.Preload("Tag").First(&task, task.TaskID).Error; err != nil {
 		return task, err // Retorna a task criada mesmo se não conseguir carregar a tag
 	}
 
