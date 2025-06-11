@@ -6,7 +6,8 @@ import (
 	"os"
 
 	"gorm.io/driver/postgres"
-	"gorm.io/gorm")
+	"gorm.io/gorm"
+)
 
 var Database *gorm.DB
 
