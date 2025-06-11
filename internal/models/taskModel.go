@@ -1,4 +1,4 @@
-package tasksModel
+package models
 
 import (
 	"errors"
@@ -23,8 +23,8 @@ type Task struct {
 	Deadline    time.Time `json:"deadLine"`
 	Priority    Priority  `gorm:"type:varchar(10);check:priority IN ('Low','Medium','High')" json:"priority"`
 	Progress    bool      `gorm:"default:false;not null" json:"progress"`
-	TagID       uuid.UUID `gorm:"type:uuid;index" json:"tagId"`
-	Tag         Tag       `gorm:"foreignKey:TagID" json:"tag"`
+	TagID       uuid.UUID `gorm:"type:uuid;index" json:"tagId"` //chave estrangeira que referencia tag
+	Tag         Tag       `gorm:"foreignKey:TagID" json:"tag"` //relação 1 pra N com tag
 	CreatedAt   time.Time `gorm:"not null" json:"createdAt"`
 	UpdatedAt   time.Time `gorm:"not null" json:"updatedAt"`
 }

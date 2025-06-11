@@ -1,4 +1,4 @@
-package tasksModel
+package models
 
 import (
 	"time"
@@ -11,7 +11,11 @@ type Tag struct {
 	ID        uuid.UUID `gorm:"type:uuid;primaryKey" json:"id"`
 	Name      string    `gorm:"varchar(255);not null" json:"name"`
 	Color     string    `gorm:"varchar(7)" json:"color"`
-	Tasks     []Task    `gorm:"foreignKey:TagID" json:"tasks"`
+
+	Task      []Task    `gorm:"foreignKey:TagID"` // Relação: Uma tag para várias tarefas
+	UserID    uuid.UUID `gorm:"type:uuid;not null" json:"userId"` // chave estrangeira
+	TagUser   User      `gorm:"foreignKey:UserID" json:"user"`    // relação com User
+
 	CreatedAt time.Time `gorm:"not null" json:"createdAt"`
 	UpdatedAt time.Time `gorm:"not null" json:"updatedAt"`
 }

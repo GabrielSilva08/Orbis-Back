@@ -3,7 +3,7 @@ package tasksController
 import (
 	"errors"
 
-	"github.com/GabrielSilva08/Orbis/internal/models/tasksModel"
+	"github.com/GabrielSilva08/Orbis/internal/models"
 	"github.com/GabrielSilva08/Orbis/internal/services/tasksService"
 	"github.com/gofiber/fiber/v2"
 	"github.com/google/uuid"
@@ -15,7 +15,7 @@ type taskController struct {
 }
 
 func (tc taskController) Create(ctx *fiber.Ctx) error {
-	var taskReq tasksModel.Task
+	var taskReq models.Task
 
 	if err := ctx.BodyParser(&taskReq); err != nil {
 		return ctx.Status(fiber.StatusUnprocessableEntity).JSON(fiber.Map{"Message:": err.Error()})

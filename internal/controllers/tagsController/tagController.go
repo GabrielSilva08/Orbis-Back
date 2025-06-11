@@ -1,17 +1,17 @@
 package tasksController
 
 import (
-	"github.com/GabrielSilva08/Orbis/internal/models/tasksModel"
-	"github.com/GabrielSilva08/Orbis/internal/services/tasksService"
+	"github.com/GabrielSilva08/Orbis/internal/models"
+	"github.com/GabrielSilva08/Orbis/internal/services/tagsService"
 	"github.com/gofiber/fiber/v2"
 )
 
 type tagController struct {
-	service tasksService.TagServiceInterface
+	service tagsService.TagServiceInterface
 }
 
 func (tc tagController) Create(ctx *fiber.Ctx) error {
-	var tagReq tasksModel.Tag
+	var tagReq models.Tag
 
 	if err := ctx.BodyParser(&tagReq); err != nil {
 		return ctx.Status(fiber.StatusUnprocessableEntity).JSON(fiber.Map{"Message:": err.Error()})
@@ -32,7 +32,7 @@ func (tc tagController) defineRoutes(router fiber.Router) {
 	tagGroup.Post("/", tc.Create)
 }
 
-func NewTagController(service tasksService.TagServiceInterface, router fiber.Router) TagControllerInterface {
+func NewTagController(service tagsService.TagServiceInterface, router fiber.Router) TagControllerInterface {
 	var tc = tagController{service: service}
 
 	tc.defineRoutes(router)

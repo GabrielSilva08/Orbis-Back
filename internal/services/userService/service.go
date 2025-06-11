@@ -1,6 +1,6 @@
 package userService
 
-import "github.com/GabrielSilva08/Orbis/internal/models/userModel"
+import "github.com/GabrielSilva08/Orbis/internal/models"
 import "github.com/GabrielSilva08/Orbis/internal/repositories/userRepo"
 
 type UserService struct {
