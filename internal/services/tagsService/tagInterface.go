@@ -7,4 +7,7 @@ import (
 
 type TagServiceInterface interface {
 	Create(tagdtos.CreateTagDto) (models.Tag, error)
+	ListAll() ([]models.Tag, error)
+	Delete(tagdtos.DeleteTagDto) (error)
+	Update(tagdtos.UpdateTagDto) (models.Tag, error)
 }
