@@ -3,9 +3,10 @@ package tasksController
 import (
 	"errors"
 
-	"github.com/GabrielSilva08/Orbis/internal/models"
+	taskdtos "github.com/GabrielSilva08/Orbis/internal/dtos/taskDtos"
 	"github.com/GabrielSilva08/Orbis/internal/services/tasksService"
 	"github.com/gofiber/fiber/v2"
+	"github.com/go-playground/validator/v10"
 	"github.com/google/uuid"
 	"gorm.io/gorm"
 )
@@ -14,11 +15,17 @@ type taskController struct {
 	service tasksService.TaskServiceInterface
 }
 
+var validate = validator.New()
+
 func (tc taskController) Create(ctx *fiber.Ctx) error {
-	var taskReq models.Task
+	var taskReq taskdtos.CreateTaskDto
 
 	if err := ctx.BodyParser(&taskReq); err != nil {
 		return ctx.Status(fiber.StatusUnprocessableEntity).JSON(fiber.Map{"Message:": err.Error()})
+	}
+
+	if err := validate.Struct(taskReq); err != nil {
+		return ctx.Status(fiber.StatusBadRequest).JSON(fiber.Map{"validation_error": err.Error()})
 	}
 
 	task, err := tc.service.Create(taskReq)

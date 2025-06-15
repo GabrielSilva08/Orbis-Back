@@ -44,5 +44,5 @@ func main() {
 	tagservice := tagsService.NewTagService(tagrepo)
 	tagsController.NewTagController(tagservice, v1)
 
-	app.Listen(":3000")
+	app.Listen("0.0.0.0:3000")
 }
