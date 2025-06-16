@@ -9,4 +9,6 @@ type TaskControllerInterface interface {
 	DeleteTaskByID(ctx *fiber.Ctx) error
 	// UpdateTaskById(ctx *fiber.Ctx) error
 	// GetTasksByTag(ctx *fiber.Ctx) error
+	// ListTasksByMonth
+	// ListTasksByWeekend
 }
