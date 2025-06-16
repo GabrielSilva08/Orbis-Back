@@ -25,10 +25,10 @@ type Task struct {
 	Progress    bool      `gorm:"default:false;not null" json:"progress"`
 	TagID       uuid.UUID `gorm:"type:uuid;index" json:"tagId"`
 	Tag         Tag       `gorm:"foreignKey:TagID" json:"tag"`
-	// UserID NOT NULL
-	// ColumnID NULLABLE
-	CreatedAt time.Time `gorm:"not null" json:"createdAt"`
-	UpdatedAt time.Time `gorm:"not null" json:"updatedAt"`
+	UserID      uuid.UUID `gorm:"type:uuid;not null" json:"userId"`
+	ColumnID    uuid.UUID `gorm:"type:uuid" json:"columnId"`
+	CreatedAt   time.Time `gorm:"not null" json:"createdAt"`
+	UpdatedAt   time.Time `gorm:"not null" json:"updatedAt"`
 }
 
 func (p Priority) IsValid() bool {

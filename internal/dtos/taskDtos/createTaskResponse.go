@@ -14,6 +14,7 @@ type CreateTaskResponse struct {
 	Priority    string    `json:"priority"`
 	Progress    bool      `json:"progress"`
 	TagID       uuid.UUID `json:"tagId"`
+	ColumnID    uuid.UUID `json:"columnId"`
 	CreatedAt   time.Time `json:"createdAt"`
 	UpdatedAt   time.Time `json:"updatedAt"`
 }

@@ -15,16 +15,34 @@ func NewTaskService(repo tasksRepo.TaskRepositoryInterface) TaskServiceInterface
 	return &TaskService{repo: repo}
 }
 
-func (service TaskService) Create(request taskdtos.CreateTaskDto) (models.Task, error) {
-	task := models.Task {
-		Title: request.Title,
+func (service TaskService) Create(request taskdtos.CreateTaskDto) (taskdtos.CreateTaskResponse, error) {
+	task := models.Task{
+		Title:       request.Title,
 		Description: request.Description,
-		Deadline: request.DeadLine,
-		Priority: request.Priority,
-		Progress: request.Progress,
+		Deadline:    request.DeadLine,
+		Priority:    request.Priority,
+		Progress:    request.Progress,
 	}
-	
-	return service.repo.Create(task)
+
+	createdTask, err := service.repo.Create(task)
+	if err != nil {
+		return taskdtos.CreateTaskResponse{}, err
+	}
+
+	response := taskdtos.CreateTaskResponse{
+		ID:          createdTask.TaskID,
+		Title:       createdTask.Title,
+		Description: createdTask.Description,
+		DeadLine:    createdTask.Deadline,
+		Priority:    string(createdTask.Priority),
+		Progress:    createdTask.Progress,
+		TagID:       createdTask.TagID,
+		ColumnID:    createdTask.ColumnID,
+		CreatedAt:   createdTask.CreatedAt,
+		UpdatedAt:   createdTask.UpdatedAt,
+	}
+
+	return response, err
 }
 
 func (service TaskService) ListAllTasks() ([]models.Task, error) {
