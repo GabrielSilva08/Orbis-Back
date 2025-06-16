@@ -1,4 +1,4 @@
-package tasksModel
+package models
 
 import (
 	"errors"
@@ -17,7 +17,7 @@ const (
 )
 
 type Task struct {
-	ID          uuid.UUID `gorm:"type:uuid;primaryKey" json:"id"`
+	TaskID      uuid.UUID `gorm:"type:uuid;primaryKey" json:"id"`
 	Title       string    `gorm:"varchar(255);not null" json:"title"`
 	Description string    `json:"description"`
 	Deadline    time.Time `json:"deadLine"`
@@ -41,7 +41,7 @@ func (p Priority) IsValid() bool {
 }
 
 func (t *Task) BeforeCreate(tx *gorm.DB) (err error) { //método para gerar automaticamente o uuid antes de inserir no banco de dados
-	t.ID = uuid.New()
+	t.TaskID = uuid.New()
 	if !t.Priority.IsValid() {
 		return errors.New("invalid priority value")
 	}

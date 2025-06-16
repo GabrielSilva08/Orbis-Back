@@ -1,7 +1,8 @@
 package tasksService
 
 import (
-	"github.com/GabrielSilva08/Orbis/internal/models/tasksModel"
+	taskdtos "github.com/GabrielSilva08/Orbis/internal/dtos/taskDtos"
+	"github.com/GabrielSilva08/Orbis/internal/models"
 	"github.com/GabrielSilva08/Orbis/internal/repositories/tasksRepo"
 	"github.com/google/uuid"
 )
@@ -14,15 +15,23 @@ func NewTaskService(repo tasksRepo.TaskRepositoryInterface) TaskServiceInterface
 	return &TaskService{repo: repo}
 }
 
-func (service TaskService) Create(task tasksModel.Task) (tasksModel.Task, error) {
+func (service TaskService) Create(request taskdtos.CreateTaskDto) (models.Task, error) {
+	task := models.Task {
+		Title: request.Title,
+		Description: request.Description,
+		Deadline: request.DeadLine,
+		Priority: request.Priority,
+		Progress: request.Progress,
+	}
+	
 	return service.repo.Create(task)
 }
 
-func (service TaskService) ListAllTasks() ([]tasksModel.Task, error) {
+func (service TaskService) ListAllTasks() ([]models.Task, error) {
 	return service.repo.ListAllTasks()
 }
 
-func (service TaskService) GetTaskByID(id uuid.UUID) (tasksModel.Task, error) {
+func (service TaskService) GetTaskByID(id uuid.UUID) (models.Task, error) {
 	return service.repo.GetTaskByID(id)
 }
 
