@@ -5,6 +5,7 @@ import (
 
 	"github.com/GabrielSilva08/Orbis/internal/models"
 	db "github.com/GabrielSilva08/Orbis/internal/repositories"
+	taskdtos "github.com/GabrielSilva08/Orbis/internal/dtos/taskDtos"
 	"github.com/google/uuid"
 )
 
@@ -47,6 +48,31 @@ func (tr taskRepository) DeleteTaskByID(id uuid.UUID) error {
 	}
 
 	return nil
+}
+
+func (tr taskRepository) Update(request taskdtos.UpdateTaskDto) (models.Task, error) {
+	var task models.Task
+	readResult := db.Database.First(&task, "task_id = ?", request.TaskID)
+
+	if readResult.Error != nil {
+		return task, readResult.Error
+	}
+	
+	updateResult := db.Database.Model(&task).
+	Select("Title", "Description", "Deadline", "Priority", "Progress", "TagID", "ColumnID").
+	Updates(models.Task{
+		Title:       *request.Title,
+		Description: *request.Description,
+		Deadline:    request.Deadline,
+		Priority:    request.Priority,
+		Progress:    *request.Progress,
+		TagID:       request.TagID,
+		ColumnID:    request.ColumnID,
+	})
+
+	db.Database.First(&task, "task_id = ?", request.TaskID) //buscando de novo para retornar a task atualizada
+	
+	return task, updateResult.Error
 }
 
 func NewTaskRepository() TaskRepositoryInterface {
