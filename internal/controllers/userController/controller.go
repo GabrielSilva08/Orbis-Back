@@ -1,7 +1,7 @@
 package userController
 
 import (
-	"github.com/GabrielSilva08/Orbis/internal/models/userModel"
+	"github.com/GabrielSilva08/Orbis/internal/models"
 	"github.com/GabrielSilva08/Orbis/internal/services/userService"
 	"github.com/gofiber/fiber/v2"
 )
@@ -11,7 +11,7 @@ type userController struct {
 }
 
 func (uc userController) Create(ctx *fiber.Ctx) error {
-	var userReq userModel.User
+	var userReq models.User
 
 	if err := ctx.BodyParser(&userReq); err != nil {
 		return ctx.Status(fiber.StatusUnprocessableEntity).JSON(fiber.Map{"Message": err.Error()}) //se não conseguir transformar o JSON em user, erro unprocessable entidy

@@ -3,13 +3,15 @@ package main
 import (
 	"log"
 
+	"github.com/GabrielSilva08/Orbis/internal/controllers/tagsController"
 	"github.com/GabrielSilva08/Orbis/internal/controllers/tasksController"
 	"github.com/GabrielSilva08/Orbis/internal/controllers/userController"
-	"github.com/GabrielSilva08/Orbis/internal/models/tasksModel"
-	"github.com/GabrielSilva08/Orbis/internal/models/userModel"
+	"github.com/GabrielSilva08/Orbis/internal/models"
 	db "github.com/GabrielSilva08/Orbis/internal/repositories"
+	"github.com/GabrielSilva08/Orbis/internal/repositories/tagsRepo"
 	"github.com/GabrielSilva08/Orbis/internal/repositories/tasksRepo"
 	"github.com/GabrielSilva08/Orbis/internal/repositories/userRepo"
+	"github.com/GabrielSilva08/Orbis/internal/services/tagsService"
 	"github.com/GabrielSilva08/Orbis/internal/services/tasksService"
 	"github.com/GabrielSilva08/Orbis/internal/services/userService"
 	"github.com/gofiber/fiber/v2"
@@ -26,9 +28,9 @@ func main() {
 	}
 
 	db.Connect() //se conectando com o banco de dados
-	db.Database.AutoMigrate(userModel.User{})
-	db.Database.AutoMigrate(tasksModel.Tag{})
-	db.Database.AutoMigrate(tasksModel.Task{})
+	db.Database.AutoMigrate(models.User{})
+	db.Database.AutoMigrate(models.Tag{})
+	db.Database.AutoMigrate(models.Task{})
 
 	userrepo := userRepo.NewUserRepository()
 	userservice := userService.NewUserService(userrepo)
@@ -38,9 +40,9 @@ func main() {
 	taskService := tasksService.NewTaskService(taskRepo)
 	tasksController.NewTaskController(taskService, v1)
 
-	tagrepo := tasksRepo.NewTagRepository()
-	tagservice := tasksService.NewTagService(tagrepo)
-	tasksController.NewTagController(tagservice, v1)
+	tagrepo := tagsRepo.NewTagRepository()
+	tagservice := tagsService.NewTagService(tagrepo)
+	tagsController.NewTagController(tagservice, v1)
 
-	app.Listen(":3000")
+	app.Listen("0.0.0.0:3000")
 }
