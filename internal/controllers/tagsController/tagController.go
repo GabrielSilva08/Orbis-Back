@@ -102,7 +102,7 @@ func (tc tagController) defineRoutes(router fiber.Router) {
 	tagGroup.Post("/", tc.Create)
 	tagGroup.Get("/", tc.ListAll)
 	tagGroup.Delete("/:id", tc.Delete)
-	tagGroup.Put("/", tc.Update)
+	tagGroup.Patch("/", tc.Update)
 }
 
 func NewTagController(service tagsService.TagServiceInterface, router fiber.Router) TagControllerInterface {

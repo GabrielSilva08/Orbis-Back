@@ -5,8 +5,8 @@ import (
 
 	taskdtos "github.com/GabrielSilva08/Orbis/internal/dtos/taskDtos"
 	"github.com/GabrielSilva08/Orbis/internal/services/tasksService"
-	"github.com/gofiber/fiber/v2"
 	"github.com/go-playground/validator/v10"
+	"github.com/gofiber/fiber/v2"
 	"github.com/google/uuid"
 	"gorm.io/gorm"
 )
@@ -95,6 +95,26 @@ func (tc taskController) DeleteTaskByID(ctx *fiber.Ctx) error {
 	return ctx.Status(fiber.StatusOK).JSON(fiber.Map{"message:": "Task deleted successfully"})
 }
 
+func (tc taskController) Update(ctx *fiber.Ctx) error {
+	var taskReq taskdtos.UpdateTaskDto
+
+	if err := ctx.BodyParser(&taskReq); err != nil {
+		return ctx.Status(fiber.StatusUnprocessableEntity).JSON(fiber.Map{"Message:": err.Error()})
+	}
+
+	if err := validate.Struct(taskReq); err != nil {
+		return ctx.Status(fiber.StatusBadRequest).JSON(fiber.Map{"validation_error": err.Error()})
+	}
+
+	task, err := tc.service.Update(taskReq)
+
+	if err != nil {
+		return ctx.Status(fiber.StatusBadRequest).JSON(fiber.Map{"Message": err.Error()})
+	}
+
+	return ctx.Status(fiber.StatusOK).JSON(task)
+}
+
 func (tc taskController) defineRoutes(router fiber.Router) {
 	taskGroup := router.Group("/tasks")
 
@@ -102,6 +122,7 @@ func (tc taskController) defineRoutes(router fiber.Router) {
 	taskGroup.Get("/", tc.ListAllTasks)
 	taskGroup.Get("/:id", tc.GetTaskByID)
 	taskGroup.Delete("/:id", tc.DeleteTaskByID)
+	taskGroup.Patch("/", tc.Update)
 }
 
 func NewTaskController(service tasksService.TaskServiceInterface, router fiber.Router) TaskControllerInterface {
