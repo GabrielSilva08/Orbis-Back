@@ -11,4 +11,5 @@ type TaskServiceInterface interface {
 	ListAllTasks() ([]models.Task, error)
 	GetTaskByID(id uuid.UUID) (models.Task, error)
 	DeleteTaskByID(id uuid.UUID) error
+	Update(task taskdtos.UpdateTaskDto) (models.Task, error)
 }

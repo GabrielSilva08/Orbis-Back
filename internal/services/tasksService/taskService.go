@@ -56,3 +56,7 @@ func (service TaskService) GetTaskByID(id uuid.UUID) (models.Task, error) {
 func (service TaskService) DeleteTaskByID(id uuid.UUID) error {
 	return service.repo.DeleteTaskByID(id)
 }
+
+func (service TaskService) Update(request taskdtos.UpdateTaskDto) (models.Task, error){
+	return service.repo.Update(request)
+}
