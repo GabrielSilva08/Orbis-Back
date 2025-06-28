@@ -36,13 +36,13 @@ func main() {
 	userservice := userService.NewUserService(userrepo)
 	userController.NewUserController(userservice, v1)
 
-	taskRepo := tasksRepo.NewTaskRepository()
-	taskService := tasksService.NewTaskService(taskRepo)
-	tasksController.NewTaskController(taskService, v1)
-
 	tagrepo := tagsRepo.NewTagRepository()
 	tagservice := tagsService.NewTagService(tagrepo)
 	tagsController.NewTagController(tagservice, v1)
+
+	taskRepo := tasksRepo.NewTaskRepository()
+	taskService := tasksService.NewTaskService(taskRepo)
+	tasksController.NewTaskController(taskService, v1)
 
 	app.Listen("0.0.0.0:3000")
 }

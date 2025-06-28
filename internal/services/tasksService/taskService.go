@@ -1,6 +1,8 @@
 package tasksService
 
 import (
+	"time"
+
 	taskdtos "github.com/GabrielSilva08/Orbis/internal/dtos/taskDtos"
 	"github.com/GabrielSilva08/Orbis/internal/models"
 	"github.com/GabrielSilva08/Orbis/internal/repositories/tasksRepo"
@@ -16,10 +18,17 @@ func NewTaskService(repo tasksRepo.TaskRepositoryInterface) TaskServiceInterface
 }
 
 func (service TaskService) Create(request taskdtos.CreateTaskDto) (taskdtos.CreateTaskResponse, error) {
+
+	deadline, err := time.Parse(time.RFC3339, request.DeadLine)
+
+	if err != nil {
+		return taskdtos.CreateTaskResponse{}, err
+	}
+
 	task := models.Task{
 		Title:       request.Title,
 		Description: request.Description,
-		Deadline:    request.DeadLine,
+		Deadline:    deadline,
 		Priority:    request.Priority,
 		Progress:    request.Progress,
 	}
@@ -57,6 +66,7 @@ func (service TaskService) DeleteTaskByID(id uuid.UUID) error {
 	return service.repo.DeleteTaskByID(id)
 }
 
-func (service TaskService) Update(request taskdtos.UpdateTaskDto) (models.Task, error){
-	return service.repo.Update(request)
+func (service TaskService) Update(id uuid.UUID, request taskdtos.UpdateTaskDto) (models.Task, error) {
+
+	return service.repo.Update(id, request)
 }

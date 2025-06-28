@@ -8,13 +8,12 @@ import (
 )
 
 type Tag struct {
-	TagID	uuid.UUID `gorm:"type:uuid;primaryKey" json:"id"`
-	Name    string    `gorm:"varchar(255);not null" json:"name"`
-	Color   string    `gorm:"varchar(7);not null" json:"color"`
+	TagID uuid.UUID `gorm:"type:uuid;primaryKey" json:"id"`
+	Name  string    `gorm:"varchar(255);not null" json:"name"`
+	Color string    `gorm:"varchar(7);not null" json:"color"`
 
-	Tasks   []Task    `json:"tasks"` // Relação: Uma tag para várias tarefas
-	UserID  uuid.UUID `gorm:"type:uuid;not null" json:"userId"` // chave estrangeira
-	User	User      `json:"user"`    // relação com User
+	//Tasks  []Task    `gorm:"foreignKey:TagID" json:"tasks"`    // Relação: Uma tag para várias tarefas
+	UserID uuid.UUID `gorm:"type:uuid;not null" json:"userId"` // chave estrangeira
 
 	CreatedAt time.Time `gorm:"not null" json:"createdAt"`
 	UpdatedAt time.Time `gorm:"not null" json:"updatedAt"`

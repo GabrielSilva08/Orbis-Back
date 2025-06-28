@@ -2,10 +2,11 @@ package tasksRepo
 
 import (
 	"errors"
+	"time"
 
+	taskdtos "github.com/GabrielSilva08/Orbis/internal/dtos/taskDtos"
 	"github.com/GabrielSilva08/Orbis/internal/models"
 	db "github.com/GabrielSilva08/Orbis/internal/repositories"
-	taskdtos "github.com/GabrielSilva08/Orbis/internal/dtos/taskDtos"
 	"github.com/google/uuid"
 )
 
@@ -50,28 +51,56 @@ func (tr taskRepository) DeleteTaskByID(id uuid.UUID) error {
 	return nil
 }
 
-func (tr taskRepository) Update(request taskdtos.UpdateTaskDto) (models.Task, error) {
+func (tr taskRepository) Update(id uuid.UUID, request taskdtos.UpdateTaskDto) (models.Task, error) {
 	var task models.Task
-	readResult := db.Database.First(&task, "task_id = ?", request.TaskID)
+
+	readResult := db.Database.First(&task, "task_id = ?", id)
 
 	if readResult.Error != nil {
 		return task, readResult.Error
 	}
-	
-	updateResult := db.Database.Model(&task).
-	Select("Title", "Description", "Deadline", "Priority", "Progress", "TagID", "ColumnID").
-	Updates(models.Task{
-		Title:       *request.Title,
-		Description: *request.Description,
-		Deadline:    request.Deadline,
-		Priority:    request.Priority,
-		Progress:    *request.Progress,
-		TagID:       request.TagID,
-		ColumnID:    request.ColumnID,
-	})
 
-	db.Database.First(&task, "task_id = ?", request.TaskID) //buscando de novo para retornar a task atualizada
-	
+	updates := make(map[string]interface{})
+
+	if request.Title != nil {
+		updates["title"] = *request.Title
+	}
+
+	if request.Description != nil {
+		updates["description"] = *request.Description
+	}
+
+	if request.Deadline != nil {
+		parsedDeadline, err := time.Parse(time.RFC3339, *request.Deadline)
+		if err != nil {
+			return models.Task{}, err
+		}
+		updates["deadline"] = parsedDeadline
+	}
+
+	if request.Priority != nil {
+		updates["priority"] = *request.Priority
+	}
+
+	if request.Progress != nil {
+		updates["progress"] = *request.Progress
+	}
+
+	if request.TagID != nil {
+		updates["tag_id"] = *request.TagID
+	}
+
+	if request.ColumnID != nil {
+		updates["column_id"] = *request.ColumnID
+	}
+
+	updateResult := db.Database.Model(&task).Updates(updates)
+	if updateResult.Error != nil {
+		return task, updateResult.Error
+	}
+
+	db.Database.First(&task, "task_id = ?", id) //buscando de novo para retornar a task atualizada
+
 	return task, updateResult.Error
 }
 
