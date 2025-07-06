@@ -21,7 +21,9 @@ func (service TaskService) Create(request taskdtos.CreateTaskDto) (taskdtos.Crea
 		Description: request.Description,
 		Deadline:    request.DeadLine,
 		Priority:    request.Priority,
-		Progress:    request.Progress,
+		Progress: 	 request.Progress,
+		UserID: 	request.User,
+		TagID: 		nil,
 	}
 
 	createdTask, err := service.repo.Create(task)
@@ -36,8 +38,7 @@ func (service TaskService) Create(request taskdtos.CreateTaskDto) (taskdtos.Crea
 		DeadLine:    createdTask.Deadline,
 		Priority:    string(createdTask.Priority),
 		Progress:    createdTask.Progress,
-		TagID:       createdTask.TagID,
-		ColumnID:    createdTask.ColumnID,
+		TagID:       nil,
 		CreatedAt:   createdTask.CreatedAt,
 		UpdatedAt:   createdTask.UpdatedAt,
 	}

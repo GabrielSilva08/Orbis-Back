@@ -2,6 +2,7 @@ package tasksController
 
 import (
 	"errors"
+	"fmt"
 
 	taskdtos "github.com/GabrielSilva08/Orbis/internal/dtos/taskDtos"
 	"github.com/GabrielSilva08/Orbis/internal/services/tasksService"
@@ -101,6 +102,8 @@ func (tc taskController) Update(ctx *fiber.Ctx) error {
 	if err := ctx.BodyParser(&taskReq); err != nil {
 		return ctx.Status(fiber.StatusUnprocessableEntity).JSON(fiber.Map{"Message:": err.Error()})
 	}
+
+	fmt.Print(taskReq)
 
 	if err := validate.Struct(taskReq); err != nil {
 		return ctx.Status(fiber.StatusBadRequest).JSON(fiber.Map{"validation_error": err.Error()})

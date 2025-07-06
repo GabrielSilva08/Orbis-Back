@@ -13,8 +13,7 @@ type CreateTaskResponse struct {
 	DeadLine    time.Time `json:"deadLine"`
 	Priority    string    `json:"priority"`
 	Progress    bool      `json:"progress"`
-	TagID       uuid.UUID `json:"tagId"`
-	ColumnID    uuid.UUID `json:"columnId"`
+	TagID       *uuid.UUID `json:"tagId"`
 	CreatedAt   time.Time `json:"createdAt"`
 	UpdatedAt   time.Time `json:"updatedAt"`
 }

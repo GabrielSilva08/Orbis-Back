@@ -17,19 +17,21 @@ const (
 )
 
 type Task struct {
-	TaskID      uuid.UUID `gorm:"type:uuid;primaryKey" json:"id"`
-	Title       string    `gorm:"varchar(255);not null" json:"title"`
-	Description string    `json:"description"`
-	Deadline    time.Time `json:"deadLine"`
-	Priority    Priority  `gorm:"type:varchar(10);check:priority IN ('Low','Medium','High')" json:"priority"`
-	Progress    bool      `gorm:"default:false;not null" json:"progress"`
-	TagID       uuid.UUID `gorm:"type:uuid;index" json:"tagId"`
-	Tag         Tag       `gorm:"foreignKey:TagID" json:"tag"`
-	UserID      uuid.UUID `gorm:"type:uuid;not null" json:"userId"`
-	ColumnID    uuid.UUID `gorm:"type:uuid" json:"columnId"`
-	CreatedAt   time.Time `gorm:"not null" json:"createdAt"`
-	UpdatedAt   time.Time `gorm:"not null" json:"updatedAt"`
+	TaskID     uuid.UUID `gorm:"type:uuid;primaryKey" json:"id"`
+	Title      string    `gorm:"varchar(255);not null" json:"title"`
+	Description string   `json:"description"`
+	Deadline   time.Time `json:"deadLine"`
+	Priority   Priority    `gorm:"type:varchar(10);check:priority IN ('Low','Medium','High')" json:"priority"`
+	Progress   bool      `gorm:"default:false;not null" json:"progress"`
+
+	TagID   *uuid.UUID `gorm:"type:uuid" json:"tagId"` // nullable, se tag for deletada
+
+	UserID  uuid.UUID  `gorm:"type:uuid;not null" json:"userId"`
+
+	CreatedAt time.Time `gorm:"not null" json:"createdAt"`
+	UpdatedAt time.Time `gorm:"not null" json:"updatedAt"`
 }
+
 
 func (p Priority) IsValid() bool {
 	switch p {
