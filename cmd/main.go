@@ -15,11 +15,15 @@ import (
 	"github.com/GabrielSilva08/Orbis/internal/services/tasksService"
 	"github.com/GabrielSilva08/Orbis/internal/services/userService"
 	"github.com/gofiber/fiber/v2"
+	"github.com/gofiber/fiber/v2/middleware/cors"
 	"github.com/joho/godotenv"
 )
 
 func main() {
 	app := fiber.New()
+
+	app.Use(cors.New())
+
 	v1 := app.Group("/api/v1")
 
 	err := godotenv.Load("../.env")
