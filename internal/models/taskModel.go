@@ -26,6 +26,8 @@ type Task struct {
 
 	TagID   *uuid.UUID `gorm:"type:uuid" json:"tagId"` // nullable, se tag for deletada
 
+	ColumnId *uuid.UUID `gorm:"type:uuid" json:"columnId"`
+
 	UserID  uuid.UUID  `gorm:"type:uuid;not null" json:"userId"`
 
 	CreatedAt time.Time `gorm:"not null" json:"createdAt"`

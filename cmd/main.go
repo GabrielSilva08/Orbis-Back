@@ -34,6 +34,7 @@ func main() {
 	db.Connect() //se conectando com o banco de dados
 	db.Database.AutoMigrate(&models.User{})
 	db.Database.AutoMigrate(&models.Tag{})
+	db.Database.AutoMigrate(&models.Column{})
 	db.Database.AutoMigrate(&models.Task{})
 
 	userrepo := userRepo.NewUserRepository()

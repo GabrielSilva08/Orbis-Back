@@ -2,7 +2,6 @@ package tasksRepo
 
 import (
 	"errors"
-	"time"
 
 	taskdtos "github.com/GabrielSilva08/Orbis/internal/dtos/taskDtos"
 	"github.com/GabrielSilva08/Orbis/internal/models"
@@ -50,7 +49,7 @@ func (tr taskRepository) Update(id uuid.UUID, request taskdtos.UpdateTaskDto) (m
 	var task models.Task
 
 	// 1. Busca a tarefa existente no banco de dados
-	if err := db.Database.First(&task, "task_id = ?", request.TaskID).Error; err != nil {
+	if err := db.Database.First(&task, "task_id = ?", id).Error; err != nil {
 		return task, err
 	}
 
@@ -75,6 +74,9 @@ func (tr taskRepository) Update(id uuid.UUID, request taskdtos.UpdateTaskDto) (m
 	if request.TagID != nil {
 		updateData["TagID"] = *request.TagID
 	}
+	if request.TagID != nil {
+		updateData["ColumnID"] = *request.ColumnID
+	}
 	if request.UserID != nil {
 		updateData["UserID"] = *request.UserID
 	}
@@ -85,7 +87,7 @@ func (tr taskRepository) Update(id uuid.UUID, request taskdtos.UpdateTaskDto) (m
 	}
 
 	// 4. Retorna a task atualizada
-	if err := db.Database.First(&task, "task_id = ?", request.TaskID).Error; err != nil {
+	if err := db.Database.First(&task, "task_id = ?", id).Error; err != nil {
 		return task, err
 	}
 
