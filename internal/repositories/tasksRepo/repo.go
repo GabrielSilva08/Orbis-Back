@@ -18,11 +18,6 @@ func (tr taskRepository) Create(task models.Task) (models.Task, error) {
 		return models.Task{}, err
 	}
 
-	// Recarregar com relacionamentos
-	if err := db.Database.Preload("Tag").First(&task, task.TaskID).Error; err != nil {
-		return task, err // Retorna a task criada mesmo se não conseguir carregar a tag
-	}
-
 	return task, nil
 }
 
@@ -54,55 +49,49 @@ func (tr taskRepository) DeleteTaskByID(id uuid.UUID) error {
 func (tr taskRepository) Update(id uuid.UUID, request taskdtos.UpdateTaskDto) (models.Task, error) {
 	var task models.Task
 
-	readResult := db.Database.First(&task, "task_id = ?", id)
-
-	if readResult.Error != nil {
-		return task, readResult.Error
+	// 1. Busca a tarefa existente no banco de dados
+	if err := db.Database.First(&task, "task_id = ?", request.TaskID).Error; err != nil {
+		return task, err
 	}
 
-	updates := make(map[string]interface{})
+	// 2. Prepara os dados para atualização de forma segura (somente campos preenchidos)
+	updateData := make(map[string]interface{})
 
 	if request.Title != nil {
-		updates["title"] = *request.Title
+		updateData["Title"] = *request.Title
 	}
-
 	if request.Description != nil {
-		updates["description"] = *request.Description
+		updateData["Description"] = *request.Description
 	}
-
-	if request.Deadline != nil {
-		parsedDeadline, err := time.Parse(time.RFC3339, *request.Deadline)
-		if err != nil {
-			return models.Task{}, err
-		}
-		updates["deadline"] = parsedDeadline
-	}
-
-	if request.Priority != nil {
-		updates["priority"] = *request.Priority
-	}
-
 	if request.Progress != nil {
-		updates["progress"] = *request.Progress
+		updateData["Progress"] = *request.Progress
 	}
-
+	if request.Deadline != nil {
+		updateData["Deadline"] = *request.Deadline
+	}
+	if request.Priority != nil {
+		updateData["Priority"] = *request.Priority
+	}
 	if request.TagID != nil {
-		updates["tag_id"] = *request.TagID
+		updateData["TagID"] = *request.TagID
+	}
+	if request.UserID != nil {
+		updateData["UserID"] = *request.UserID
 	}
 
-	if request.ColumnID != nil {
-		updates["column_id"] = *request.ColumnID
+	// 3. Atualiza apenas os campos presentes
+	if err := db.Database.Model(&task).Updates(updateData).Error; err != nil {
+		return task, err
 	}
 
-	updateResult := db.Database.Model(&task).Updates(updates)
-	if updateResult.Error != nil {
-		return task, updateResult.Error
+	// 4. Retorna a task atualizada
+	if err := db.Database.First(&task, "task_id = ?", request.TaskID).Error; err != nil {
+		return task, err
 	}
 
-	db.Database.First(&task, "task_id = ?", id) //buscando de novo para retornar a task atualizada
-
-	return task, updateResult.Error
+	return task, nil
 }
+
 
 func NewTaskRepository() TaskRepositoryInterface {
 	return &taskRepository{}

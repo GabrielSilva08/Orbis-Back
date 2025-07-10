@@ -117,8 +117,7 @@ func (tc taskController) Update(ctx *fiber.Ctx) error {
 		})
 	}
 
-	// Log do struct parseado
-	fmt.Printf("Struct parseado: %+v\n", taskReq)
+	fmt.Print(taskReq)
 
 	if err := validate.Struct(taskReq); err != nil {
 		fmt.Printf("Erro na validação: %v\n", err)

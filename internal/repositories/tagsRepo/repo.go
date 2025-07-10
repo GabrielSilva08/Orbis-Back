@@ -43,11 +43,24 @@ func (tr tagRepository) Update(request tagdtos.UpdateTagDto) (models.Tag, error)
 		return tag, readResult.Error
 	}
 	
-	updateResult := db.Database.Model(&tag).Select("Name","Color").Updates(models.Tag{Name: request.Name, Color: request.Color})
+	updateData := make(map[string]interface{})
+	if request.Name != nil {
+		updateData["Name"] = *request.Name
+	}
+	if request.Color != nil {
+		updateData["Color"] = *request.Color
+	}
 
-	db.Database.First(&tag, "task_id = ?", request.Id) //buscando de novo para retornar a tag atualizada
-	
-	return tag, updateResult.Error
+	if err := db.Database.Model(&tag).Updates(updateData).Error; err != nil {
+		return tag, err
+	}
+
+	// 4. Retorna a task atualizada
+	if err := db.Database.First(&tag, "tag_id = ?", request.Id).Error; err != nil {
+		return tag, err
+	}
+
+	return tag, nil
 }
 
 func NewTagRepository() TagRepositoryInterface {
