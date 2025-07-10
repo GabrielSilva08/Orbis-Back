@@ -1,19 +1,17 @@
 package taskdtos
 
 import (
-	"time"
-
-	"github.com/google/uuid"
 	"github.com/GabrielSilva08/Orbis/internal/models"
+	"github.com/google/uuid"
 )
 
 type UpdateTaskDto struct {
-	TaskID      uuid.UUID        `json:"taskId" validate:"required"`
-	Title       *string          `json:"title"`
-	Description *string          `json:"description"`
-	Deadline    *time.Time       `json:"deadLine"`
-	Priority    *models.Priority `json:"priority"`
-	Progress    *bool            `json:"progress"`
-	TagID       *uuid.UUID       `json:"tagId"`
-	UserID      *uuid.UUID       `json:"userId"`
+	Title       *string          `json:"title,omitempty"`
+	Description *string          `json:"description,omitempty"`
+	Deadline    *string          `json:"deadLine,omitempty" validate:"omitempty,datetime=2006-01-02T15:04:05Z07:00"`
+	Priority    *models.Priority `json:"priority,omitempty" validate:"omitempty,oneof=Low Medium High"`
+	Progress    *bool            `json:"progress,omitempty"`
+	TagID       *uuid.UUID       `json:"tagId,omitempty"`
+	UserID      uuid.UUID        `json:"userId" validate:"required"`
+	ColumnID    *uuid.UUID       `json:"columnId,omitempty"`
 }

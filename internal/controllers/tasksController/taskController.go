@@ -97,19 +97,36 @@ func (tc taskController) DeleteTaskByID(ctx *fiber.Ctx) error {
 }
 
 func (tc taskController) Update(ctx *fiber.Ctx) error {
+	taskIDString := ctx.Params("id")
+
+	taskID, err := uuid.Parse(taskIDString)
+	if err != nil {
+		return ctx.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+			"Error:": err.Error(),
+		})
+	}
 	var taskReq taskdtos.UpdateTaskDto
 
+	fmt.Printf("Body recebido: %s\n", string(ctx.Body()))
+
 	if err := ctx.BodyParser(&taskReq); err != nil {
-		return ctx.Status(fiber.StatusUnprocessableEntity).JSON(fiber.Map{"Message:": err.Error()})
+		fmt.Printf("Erro no BodyParser: %v\n", err)
+		return ctx.Status(fiber.StatusUnprocessableEntity).JSON(fiber.Map{
+			"error":   "Invalid JSON format",
+			"details": err.Error(),
+		})
 	}
 
 	fmt.Print(taskReq)
 
 	if err := validate.Struct(taskReq); err != nil {
-		return ctx.Status(fiber.StatusBadRequest).JSON(fiber.Map{"validation_error": err.Error()})
+		fmt.Printf("Erro na validação: %v\n", err)
+		return ctx.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+			"error":   "Validation failed",
+			"details": err.Error(),
+		})
 	}
-
-	task, err := tc.service.Update(taskReq)
+	task, err := tc.service.Update(taskID, taskReq)
 
 	if err != nil {
 		return ctx.Status(fiber.StatusBadRequest).JSON(fiber.Map{"Message": err.Error()})
@@ -125,7 +142,7 @@ func (tc taskController) defineRoutes(router fiber.Router) {
 	taskGroup.Get("/", tc.ListAllTasks)
 	taskGroup.Get("/:id", tc.GetTaskByID)
 	taskGroup.Delete("/:id", tc.DeleteTaskByID)
-	taskGroup.Patch("/", tc.Update)
+	taskGroup.Patch("/:id", tc.Update)
 }
 
 func NewTaskController(service tasksService.TaskServiceInterface, router fiber.Router) TaskControllerInterface {

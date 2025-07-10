@@ -2,10 +2,11 @@ package tasksRepo
 
 import (
 	"errors"
+	"time"
 
+	taskdtos "github.com/GabrielSilva08/Orbis/internal/dtos/taskDtos"
 	"github.com/GabrielSilva08/Orbis/internal/models"
 	db "github.com/GabrielSilva08/Orbis/internal/repositories"
-	taskdtos "github.com/GabrielSilva08/Orbis/internal/dtos/taskDtos"
 	"github.com/google/uuid"
 )
 
@@ -45,7 +46,7 @@ func (tr taskRepository) DeleteTaskByID(id uuid.UUID) error {
 	return nil
 }
 
-func (tr taskRepository) Update(request taskdtos.UpdateTaskDto) (models.Task, error) {
+func (tr taskRepository) Update(id uuid.UUID, request taskdtos.UpdateTaskDto) (models.Task, error) {
 	var task models.Task
 
 	// 1. Busca a tarefa existente no banco de dados
