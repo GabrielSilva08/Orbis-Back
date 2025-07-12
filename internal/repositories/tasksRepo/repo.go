@@ -74,7 +74,7 @@ func (tr taskRepository) Update(id uuid.UUID, request taskdtos.UpdateTaskDto) (m
 	if request.TagID != nil {
 		updateData["TagID"] = *request.TagID
 	}
-	if request.TagID != nil {
+	if request.ColumnID != nil {
 		updateData["ColumnID"] = *request.ColumnID
 	}
 	if request.UserID != nil {

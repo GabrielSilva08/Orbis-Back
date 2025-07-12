@@ -33,7 +33,7 @@ func (cc ColumnController) defineRoutes(router fiber.Router) {
 	tagGroup.Patch("/", cc.Update)
 }
 
-func NewTagController(service columnservice.ColumnServiceInterface, router fiber.Router) ColumnControllerInterface {
+func NewColumnController(service columnservice.ColumnServiceInterface, router fiber.Router) ColumnControllerInterface {
 	var cc = ColumnController{service: service}
 
 	cc.defineRoutes(router)

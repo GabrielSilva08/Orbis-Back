@@ -3,14 +3,17 @@ package main
 import (
 	"log"
 
+	columncontroller "github.com/GabrielSilva08/Orbis/internal/controllers/columnController"
 	"github.com/GabrielSilva08/Orbis/internal/controllers/tagsController"
 	"github.com/GabrielSilva08/Orbis/internal/controllers/tasksController"
 	"github.com/GabrielSilva08/Orbis/internal/controllers/userController"
 	"github.com/GabrielSilva08/Orbis/internal/models"
 	db "github.com/GabrielSilva08/Orbis/internal/repositories"
+	"github.com/GabrielSilva08/Orbis/internal/repositories/columnRepo"
 	"github.com/GabrielSilva08/Orbis/internal/repositories/tagsRepo"
 	"github.com/GabrielSilva08/Orbis/internal/repositories/tasksRepo"
 	"github.com/GabrielSilva08/Orbis/internal/repositories/userRepo"
+	columnservice "github.com/GabrielSilva08/Orbis/internal/services/columnService"
 	"github.com/GabrielSilva08/Orbis/internal/services/tagsService"
 	"github.com/GabrielSilva08/Orbis/internal/services/tasksService"
 	"github.com/GabrielSilva08/Orbis/internal/services/userService"
@@ -48,6 +51,10 @@ func main() {
 	taskRepo := tasksRepo.NewTaskRepository()
 	taskService := tasksService.NewTaskService(taskRepo)
 	tasksController.NewTaskController(taskService, v1)
+
+	columnrepo := columnRepo.NewColumnRepository()
+	columnservice := columnservice.NewColumnService(columnrepo)
+	columncontroller.NewColumnController(columnservice, v1)
 
 	app.Listen("0.0.0.0:3000")
 }

@@ -11,7 +11,7 @@ type ColumnService struct {
 	repo columnRepo.ColumnRepoInterface
 }
 
-func NewTagService(repo columnRepo.ColumnRepoInterface) ColumnServiceInterface {
+func NewColumnService(repo columnRepo.ColumnRepoInterface) ColumnServiceInterface {
 	return &ColumnService{repo: repo}
 }
 
