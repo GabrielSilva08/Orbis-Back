@@ -12,6 +12,6 @@ type UpdateTaskDto struct {
 	Priority    *models.Priority `json:"priority,omitempty" validate:"omitempty,oneof=Low Medium High"`
 	Progress    *bool            `json:"progress,omitempty"`
 	TagID       *uuid.UUID       `json:"tagId,omitempty"`
-	UserID      uuid.UUID        `json:"userId" validate:"required"`
+	UserID      *uuid.UUID        `json:"userId, omitempty"`
 	ColumnID    *uuid.UUID       `json:"columnId,omitempty"`
 }

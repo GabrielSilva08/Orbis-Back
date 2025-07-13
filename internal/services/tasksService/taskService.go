@@ -1,6 +1,7 @@
 package tasksService
 
 import (
+	"fmt"
 	"time"
 
 	taskdtos "github.com/GabrielSilva08/Orbis/internal/dtos/taskDtos"
@@ -19,7 +20,23 @@ func NewTaskService(repo tasksRepo.TaskRepositoryInterface) TaskServiceInterface
 
 func (service TaskService) Create(request taskdtos.CreateTaskDto) (taskdtos.CreateTaskResponse, error) {
 
-	deadline, err := time.Parse(time.RFC3339, request.DeadLine)
+	layouts := []string{
+		time.RFC3339,
+		"2006-01-02",
+		"2006-01-02 15:04:05",
+		"02/01/2006 15:04",
+	}
+	
+	var deadline time.Time
+	var err error
+	for _, layout := range layouts {
+		deadline, err = time.Parse(layout, request.DeadLine)
+		if err == nil {
+			break
+		}
+	}
+
+	fmt.Print(deadline)
 
 	if err != nil {
 		return taskdtos.CreateTaskResponse{}, err
