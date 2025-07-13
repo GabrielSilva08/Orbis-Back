@@ -22,13 +22,13 @@ func (tr taskRepository) Create(task models.Task) (models.Task, error) {
 
 func (tr taskRepository) ListAllTasks() ([]models.Task, error) {
 	var tasks []models.Task
-	result := db.Database.Preload("Tag").Find(&tasks) // Preload para carregar as tags dentro de tasks
+	result := db.Database.Find(&tasks)
 	return tasks, result.Error
 }
 
 func (tr taskRepository) GetTaskByID(id uuid.UUID) (models.Task, error) {
 	var task models.Task
-	result := db.Database.Preload("Tag").First(&task, id)
+	result := db.Database.First(&task, id)
 	return task, result.Error
 }
 
@@ -93,7 +93,6 @@ func (tr taskRepository) Update(id uuid.UUID, request taskdtos.UpdateTaskDto) (m
 
 	return task, nil
 }
-
 
 func NewTaskRepository() TaskRepositoryInterface {
 	return &taskRepository{}
