@@ -25,12 +25,12 @@ func init() { //usando a biblioteca validade para cadastrar uma validação usan
 }
 
 func (cc ColumnController) defineRoutes(router fiber.Router) {
-	tagGroup := router.Group("/columns")
+	columnGroup := router.Group("/columns")
 
-	tagGroup.Post("/", cc.Create)
-	tagGroup.Get("/:id", cc.ListAll)
-	tagGroup.Delete("/:id", cc.Delete)
-	tagGroup.Patch("/", cc.Update)
+	columnGroup.Post("/", cc.Create)
+	columnGroup.Get("/:id", cc.ListAll)
+	columnGroup.Delete("/:id", cc.Delete)
+	columnGroup.Patch("/", cc.Update)
 }
 
 func NewColumnController(service columnservice.ColumnServiceInterface, router fiber.Router) ColumnControllerInterface {
