@@ -26,7 +26,7 @@ func (service TaskService) Create(request taskdtos.CreateTaskDto) (taskdtos.Crea
 		"2006-01-02 15:04:05",
 		"02/01/2006 15:04",
 	}
-	
+
 	var deadline time.Time
 	var err error
 	for _, layout := range layouts {
@@ -47,9 +47,10 @@ func (service TaskService) Create(request taskdtos.CreateTaskDto) (taskdtos.Crea
 		Description: request.Description,
 		Deadline:    deadline,
 		Priority:    request.Priority,
-		Progress: 	 request.Progress,
-		UserID: 	request.User,
-		TagID: 		nil,
+		Progress:    request.Progress,
+		UserID:      request.User,
+		TagID:       request.Tag,
+		ColumnId:    request.Column,
 	}
 
 	createdTask, err := service.repo.Create(task)
@@ -64,7 +65,8 @@ func (service TaskService) Create(request taskdtos.CreateTaskDto) (taskdtos.Crea
 		DeadLine:    createdTask.Deadline,
 		Priority:    string(createdTask.Priority),
 		Progress:    createdTask.Progress,
-		TagID:       nil,
+		TagID:       createdTask.TagID,
+		ColumnID:    createdTask.ColumnId,
 		CreatedAt:   createdTask.CreatedAt,
 		UpdatedAt:   createdTask.UpdatedAt,
 	}

@@ -29,10 +29,10 @@ func (service TagService) ListAll() ([]models.Tag, error) {
 	return service.repo.ListAll()
 }
 
-func (service TagService) Delete(request tagdtos.DeleteTagDto) (error) {
+func (service TagService) Delete(request tagdtos.DeleteTagDto) error {
 	return service.repo.Delete(request.Id)
 }
 
-func (service TagService) Update(request tagdtos.UpdateTagDto) (models.Tag, error){
+func (service TagService) Update(request tagdtos.UpdateTagDto) (models.Tag, error) {
 	return service.repo.Update(request)
 }

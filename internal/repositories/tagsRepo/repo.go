@@ -18,11 +18,11 @@ func (tr tagRepository) Create(tag models.Tag) (models.Tag, error) {
 
 func (tr tagRepository) ListAll() ([]models.Tag, error) {
 	var tags []models.Tag
-	result := db.Database.Preload("Tasks").Preload("User").Find(&tags)
+	result := db.Database.Find(&tags)
 	return tags, result.Error
 }
 
-func (tr tagRepository) Delete(id uuid.UUID) (error) {
+func (tr tagRepository) Delete(id uuid.UUID) error {
 	result := db.Database.Delete(&models.Tag{}, id)
 	if result.Error != nil {
 		return result.Error
@@ -42,7 +42,7 @@ func (tr tagRepository) Update(request tagdtos.UpdateTagDto) (models.Tag, error)
 	if readResult.Error != nil {
 		return tag, readResult.Error
 	}
-	
+
 	updateData := make(map[string]interface{})
 	if request.Name != nil {
 		updateData["Name"] = *request.Name
