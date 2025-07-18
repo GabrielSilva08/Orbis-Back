@@ -67,7 +67,7 @@ func main() {
 	if *seedFlag {
 		// Criando um usuário após configurar o serviço
 		newUser := models.User{
-			UserID: "67594f2b-5fff-419d-894d-f1486ba4aee1",
+			UserID: uuid.Parse("67594f2b-5fff-419d-894d-f1486ba4aee1"),
 			Name: "Marco Túlio",
 		}
 
