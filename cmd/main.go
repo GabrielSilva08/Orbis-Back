@@ -66,20 +66,25 @@ func main() {
 	columncontroller.NewColumnController(columnservice, v1)
 
 	if *seedFlag {
-		// Criando um usuário após configurar o serviço
-		newUser := models.User{
-			UserID: uuid.Parse("67594f2b-5fff-419d-894d-f1486ba4aee1"),
-			Name: "Marco Túlio",
-		}
-
-		createdUser, err := userservice.Create(newUser)
+		userID, err := uuid.Parse("67594f2b-5fff-419d-894d-f1486ba4aee1")
 		if err != nil {
-			log.Printf("Erro ao criar usuário: %v", err)
-		} else {
-			log.Printf("Usuário criado com sucesso: %+v", createdUser)
+			log.Printf("ERROR: ccriação de usuário")
 		}
+		// Criando um usuário após configurar o serviço
+		else{
+			newUser := models.User{
+				UserID: userID,
+				Name: "Marco Túlio",
+			}
 
-		userId := createdUser.UserID
+			createdUser, err := userservice.Create(newUser)
+			if err != nil {
+				log.Printf("Erro ao criar usuário: %v", err)
+			} else {
+				log.Printf("Usuário criado com sucesso: %+v", createdUser)
+			}
+			userId := createdUser.UserID
+		}
 
 		// Criando tag
 		tag := tagdtos.CreateTagDto{
