@@ -74,6 +74,32 @@ func (tc taskController) GetTaskByID(ctx *fiber.Ctx) error {
 	return ctx.Status(fiber.StatusFound).JSON(task)
 }
 
+func (tc taskController) GetTasksByTag(ctx *fiber.Ctx) error {
+	tagIDString := ctx.Params("id")
+
+	tagID, err := uuid.Parse(tagIDString)
+	if err != nil {
+		// UUID inválida
+		return ctx.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+			"Error:": err.Error(),
+		})
+	}
+
+	task, err := tc.service.GetTaskByID(tagID)
+
+	if err != nil {
+		if errors.Is(err, gorm.ErrRecordNotFound) {
+			// task não encontrada
+			return ctx.Status(fiber.StatusNotFound).JSON(fiber.Map{"Error:": err.Error()})
+		} else {
+			// outro erro qualquer
+			return ctx.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"Error:": err.Error()})
+		}
+	}
+
+	return ctx.Status(fiber.StatusFound).JSON(task)
+}
+
 func (tc taskController) DeleteTaskByID(ctx *fiber.Ctx) error {
 	taskIDString := ctx.Params("id")
 
@@ -141,6 +167,7 @@ func (tc taskController) defineRoutes(router fiber.Router) {
 	taskGroup.Post("/", tc.Create)
 	taskGroup.Get("/", tc.ListAllTasks)
 	taskGroup.Get("/:id", tc.GetTaskByID)
+	taskGroup.Get("/tag/:id", tc.GetTasksByTag)
 	taskGroup.Delete("/:id", tc.DeleteTaskByID)
 	taskGroup.Patch("/:id", tc.Update)
 }

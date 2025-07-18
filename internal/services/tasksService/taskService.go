@@ -80,6 +80,10 @@ func (service TaskService) GetTaskByID(id uuid.UUID) (models.Task, error) {
 	return service.repo.GetTaskByID(id)
 }
 
+func (service TaskService) GetTasksByTag(tagId uuid.UUID) ([]models.Task, error) {
+	return service.repo.GetTasksByTag(tagId)
+}
+
 func (service TaskService) DeleteTaskByID(id uuid.UUID) error {
 	return service.repo.DeleteTaskByID(id)
 }

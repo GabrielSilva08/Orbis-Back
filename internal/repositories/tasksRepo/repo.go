@@ -32,6 +32,12 @@ func (tr taskRepository) GetTaskByID(id uuid.UUID) (models.Task, error) {
 	return task, result.Error
 }
 
+func (tr taskRepository) GetTasksByTag(tagId uuid.UUID) ([]models.Task, error) {
+	var task []models.Task
+	result := db.Database.Preload("Tag").Where("tag_id = ?", tagId).Find(&task)
+	return task, result.Error
+}
+
 func (tr taskRepository) DeleteTaskByID(id uuid.UUID) error {
 	result := db.Database.Delete(&models.Task{}, id)
 	if result.Error != nil {
