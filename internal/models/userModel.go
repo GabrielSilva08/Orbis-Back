@@ -4,7 +4,6 @@ import (
 	"time"
 
 	"github.com/google/uuid"
-	"gorm.io/gorm"
 )
 
 // o model define como as nossas entidades serão, o GORM faz a conversão automática disso pra uma tabela no banco de dados
@@ -17,7 +16,7 @@ type User struct {
 	UpdatedAt time.Time `gorm:"not null" json:"updatedAt"`
 }
 
-func (u *User) BeforeCreate(tx *gorm.DB) (err error) { //método para gerar automaticamente o uuid antes de inserir no banco de dados
+/*func (u *User) BeforeCreate(tx *gorm.DB) (err error) { //método para gerar automaticamente o uuid antes de inserir no banco de dados
 	u.UserID = uuid.New()
 	return
-}
+}*/
