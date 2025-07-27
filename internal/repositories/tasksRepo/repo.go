@@ -78,13 +78,13 @@ func (tr taskRepository) Update(id uuid.UUID, request taskdtos.UpdateTaskDto) (m
 		updateData["Priority"] = *request.Priority
 	}
 	if request.TagID != nil {
-		updateData["TagID"] = *request.TagID
+		updateData["TagId"] = *request.TagID
 	}
 	if request.ColumnID != nil {
-		updateData["ColumnID"] = *request.ColumnID
+		updateData["ColumnId"] = *request.ColumnID
 	}
 	if request.UserID != nil {
-		updateData["UserID"] = *request.UserID
+		updateData["UserId"] = *request.UserID
 	}
 
 	// 3. Atualiza apenas os campos presentes

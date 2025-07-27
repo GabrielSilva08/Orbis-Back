@@ -9,7 +9,6 @@ import (
 	"github.com/GabrielSilva08/Orbis/internal/controllers/tagsController"
 	"github.com/GabrielSilva08/Orbis/internal/controllers/tasksController"
 	"github.com/GabrielSilva08/Orbis/internal/controllers/userController"
-	columndtos "github.com/GabrielSilva08/Orbis/internal/dtos/columnDtos"
 	tagdtos "github.com/GabrielSilva08/Orbis/internal/dtos/tagDtos"
 	taskdtos "github.com/GabrielSilva08/Orbis/internal/dtos/taskDtos"
 	"github.com/GabrielSilva08/Orbis/internal/models"
@@ -100,14 +99,27 @@ func main() {
 			log.Printf("Tag criada com sucesso: %+v", createdTag)
 		}
 
-		// Criando coluna
+		/* Criando coluna
 		column := columndtos.CreateColumnDto{
-			Name:   "UFC",
+			Name:   "A fazer",
 			Color:  "#00B7EB",
 			UserID: userId,
+		}*/
+
+		columnId, err := uuid.Parse("1230d555-db63-4307-ab81-8d56450f18bf")
+
+		if err != nil {
+			log.Printf("ERROR: parse de uuid")
 		}
 
-		createdColumn, err := columnservice.Create(column)
+		column := models.Column{
+			ColumnID: columnId,
+			Name:     "A fazer",
+			Color:    "#00B7EB",
+			UserID:   userId,
+		}
+
+		createdColumn, err := columnrepo.Create(column)
 		if err != nil {
 			log.Printf("Erro ao criar column: %v", err)
 		} else {

@@ -14,6 +14,8 @@ type Column struct {
 }
 
 func (c *Column) BeforeCreate(tx *gorm.DB) (err error) {
-	c.ColumnID = uuid.New()
+	if c.ColumnID == uuid.Nil {
+		c.ColumnID = uuid.New()
+	}
 	return
 }
