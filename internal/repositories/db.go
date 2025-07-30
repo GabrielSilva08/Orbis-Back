@@ -13,12 +13,12 @@ var Database *gorm.DB
 
 func Connect() {
 	host := os.Getenv("DB_HOST") // nome do serviço no docker-compose
-	port := os.Getenv("GB_PORT")
+	port := os.Getenv("DB_PORT")
 	user := os.Getenv("DB_USER")
 	password := os.Getenv("DB_PASSWORD")
 	dbname := os.Getenv("DB_NAME")
 
-	dsn := fmt.Sprintf("host=%s user=%s password=%s dbname=%s port=%s sslmode=disable",
+	dsn := fmt.Sprintf("host=%s user=%s password=%s dbname=%s port=%s sslmode=enable",
 		host, user, password, dbname, port)
 
 	database, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
