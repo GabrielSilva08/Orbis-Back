@@ -12,11 +12,11 @@ import (
 var Database *gorm.DB
 
 func Connect() {
-	host := os.Getenv("POSTGRES_HOST") // nome do serviço no docker-compose
-	port := os.Getenv("POSTGRES_PORT")
-	user := os.Getenv("POSTGRES_USER")
-	password := os.Getenv("POSTGRES_PASSWORD")
-	dbname := os.Getenv("POSTGRES_DB")
+	host := os.Getenv("DB_HOST") // nome do serviço no docker-compose
+	port := os.Getenv("GB_PORT")
+	user := os.Getenv("DB_USER")
+	password := os.Getenv("DB_PASSWORD")
+	dbname := os.Getenv("DB_NAME")
 
 	dsn := fmt.Sprintf("host=%s user=%s password=%s dbname=%s port=%s sslmode=disable",
 		host, user, password, dbname, port)
