@@ -1,15 +1,22 @@
-# Usa uma imagem oficial do Golang
-FROM golang:1.24
+# Etapa de build
+FROM golang:1.24 AS builder
 
 WORKDIR /app
 
-COPY backend/go.mod backend/go.sum ./
+COPY go.mod go.sum ./
 RUN go mod download
 
-COPY backend .
+COPY . .
 
-RUN go build -o main .
+RUN go build -o main ./cmd
+
+# Etapa de runtime
+FROM debian:bookworm-slim
+
+WORKDIR /app
+
+COPY --from=builder /app/main .
 
 EXPOSE 8080
 
-CMD ["./main"]
+CMD ["./main", "--seed"]
