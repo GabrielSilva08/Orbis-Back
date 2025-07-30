@@ -6,12 +6,11 @@ import (
 	"github.com/GabrielSilva08/Orbis/internal/models/userModel"
 	"github.com/GabrielSilva08/Orbis/internal/repositories"
 	"github.com/GabrielSilva08/Orbis/internal/repositories/userRepo"
-	"github.com/joho/godotenv"
 	"github.com/stretchr/testify/assert"
 )
 
 func TestCreateUser(t *testing.T)  {
-	envErr := godotenv.Load("../../.env")
+	//envErr := godotenv.Load("../../.env")
 	assert.NoError(t, envErr, "Erro ao carregar o arquivo env")
 
 	db.Connect()
