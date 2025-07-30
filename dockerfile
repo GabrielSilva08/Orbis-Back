@@ -8,7 +8,7 @@ RUN go mod download
 
 COPY backend .
 
-RUN go build -o main .
+RUN go build -v -o main ./cmd
 
 EXPOSE 8080
 
