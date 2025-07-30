@@ -8,8 +8,7 @@ RUN go mod download
 
 COPY . .
 
-RUN go build -o main ./cmd
-
+RUN go build -v -o main ./cmd
 # Etapa de runtime
 FROM debian:bookworm-slim
 
