@@ -24,7 +24,7 @@ import (
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/cors"
 	"github.com/google/uuid"
-	"github.com/joho/godotenv"
+	"os"
 )
 
 func main() {
@@ -34,10 +34,10 @@ func main() {
 
 	v1 := app.Group("/api/v1")
 
-	err := godotenv.Load("../.env")
+	/*err := godotenv.Load("../.env")
 	if err != nil {
 		log.Fatalf("Erro ao carregar o arquivo .env: %v", err)
-	}
+	}*/
 
 	seedFlag := flag.Bool("seed", false, "Criar dados iniciais")
 	flag.Parse()
@@ -162,6 +162,8 @@ func main() {
 		} else {
 			log.Printf("Task 2 criada com sucesso: %+v", createdTask2)
 		}
+
+		os.Exit(0)
 	}
 
 	app.Listen("0.0.0.0:3000")
