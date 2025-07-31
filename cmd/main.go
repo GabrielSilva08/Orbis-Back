@@ -162,8 +162,6 @@ func main() {
 		} else {
 			log.Printf("Task 2 criada com sucesso: %+v", createdTask2)
 		}
-
-		os.Exit(0)
 	}
 
 	app.Listen("0.0.0.0:8080")
